@@ -1,124 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Pro</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #121212;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        h1 { margin-bottom: 20px; }
-        .board {
-            display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 5px;
-        }
-        .cell {
-            background: #1e1e1e;
-            border: 2px solid #333;
-            font-size: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #fff;
-        }
-        .cell:hover { background: #2a2a2a; }
-        #status { margin-top: 20px; font-size: 18px; }
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #6200ee;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+<head> <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Pro - AdMob Final</title>
+<script>
+const ADMOB_CONFIG = {
+  appOpen: "ca-app-pub-8188000993082482/9810959645",
+  banner: "ca-app-pub-8188000993082482/8557587721",
+  interstitial: "ca-app-pub-8188000993082482/7100112382",
+  rewarded: "ca-app-pub-8188000993082482/9534704032"
+};
+</script>
+<style>
+:root{--bg:#020617;--panel:rgba(30,41,59,0.72);--border:rgba(255,255,255,0.1);--cx:#38bdf8;--co:#f43f5e;--text:#f8fafc}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;user-select:none}
+body{background:radial-gradient(circle at center,#0f172a 0%,#020617 100%);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden;position:relative}
+.aurora{position:absolute;border-radius:9999px;filter:blur(60px);mix-blend:screen;pointer-events:none}
+.blob-1{width:360px;height:360px;left:-40px;top:-50px;background:radial-gradient(circle at 30% 30%,rgba(56,189,248,0.85),rgba(14,165,233,0.15) 60%);opacity:0.32;animation:aurora1 11s ease-in-out infinite}
+.blob-2{width:420px;height:420px;right:-50px;top:8%;background:radial-gradient(circle at 50% 50%,rgba(244,114,182,0.75),rgba(236,72,153,0.12) 62%);opacity:0.26;animation:aurora2 13s ease-in-out infinite}
+.blob-3{width:480px;height:480px;left:10%;bottom:-90px;background:radial-gradient(circle at 40% 40%,rgba(99,102,241,0.7),rgba(79,70,229,0.08) 65%);opacity:0.22;animation:aurora3 16s ease-in-out infinite}
+@keyframes aurora1{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(28px,18px,0) scale(1.08)}}
+@keyframes aurora2{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-22px,24px,0) scale(1.12)}}
+@keyframes aurora3{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(18px,-22px,0) scale(1.06)}}
+.container{width:100%;max-width:450px;padding:20px;display:flex;flex-direction:column;align-items:center;position:relative;z-index:2}
+.screen{display:none;width:100%;flex-direction:column;align-items:center;animation:fadeIn .4s ease}.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+h1{font-size:2.5rem;font-weight:800;background:linear-gradient(45deg,#38bdf8,#818cf8,#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.subtitle{font-size:.85rem;color:#94a3b8;margin-bottom:25px;text-transform:uppercase;letter-spacing:2px}
+.card{background:var(--panel);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:20px;padding:20px;width:100%;box-shadow:0 20px 40px rgba(0,0,0,.4);margin-bottom:15px}
+.label{font-size:.85rem;color:#cbd5e1;margin-bottom:8px;font-weight:600;display:block}
+.btn-group{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px}.btn-group.three{grid-template-columns:repeat(3,1fr)}
+.option-btn{background:rgba(15,23,42,.6);border:1px solid var(--border);color:#94a3b8;padding:12px;border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;transition:.3s}
+.option-btn.selected{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;border-color:#60a5fa;box-shadow:0 0 15px rgba(59,130,246,.5)}
+.primary-btn{width:100%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;padding:15px;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;box-shadow:0 10px 25px rgba(16,185,129,.4);margin-top:10px}
+.secondary-btn{background:transparent;border:1px solid var(--border);color:#cbd5e1;padding:10px;border-radius:12px;font-size:.9rem;cursor:pointer;width:100%;margin-top:8px}
+.game-header{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:20px}
+.score-board{display:flex;gap:15px}.score-box{background:var(--panel);border:1px solid var(--border);padding:8px 15px;border-radius:12px;text-align:center;min-width:70px}.score-box span{display:block;font-size:.75rem;color:#94a3b8}.score-box b{font-size:1.2rem;color:#fff}
+.turn-indicator{font-size:1rem;font-weight:600;padding:8px 16px;background:var(--panel);border-radius:20px;border:1px solid var(--border);margin-bottom:20px}
+.board{display:grid;gap:10px;width:100%;max-width:380px;aspect-ratio:1;margin-bottom:20px}.board.grid-3{grid-template-columns:repeat(3,1fr)}.board.grid-4{grid-template-columns:repeat(4,1fr)}
+.cell{background:rgba(30,41,59,.5);border:2px solid rgba(255,255,255,.05);border-radius:16px;display:flex;justify-content:center;align-items:center;cursor:pointer;box-shadow:inset 0 4px 6px rgba(0,0,0,.3),0 4px 10px rgba(0,0,0,.2);transition:.2s;overflow:visible}.cell:hover{border-color:rgba(255,255,255,.2);background:rgba(30,41,59,.8)}
+.has-x{background:radial-gradient(circle at center,rgba(56,189,248,.15) 0%,rgba(30,41,59,.5) 70%)!important}.has-o{background:radial-gradient(circle at center,rgba(244,63,94,.15) 0%,rgba(30,41,59,.5) 70%)!important}
+.xo-svg{width:70%;height:70%;display:block;overflow:visible;animation:xoPop .56s cubic-bezier(.34,1.56,.64,1) both}.xo-svg.is-win{animation:xoPop .56s cubic-bezier(.34,1.56,.64,1) both,winPulse .9s ease-in-out infinite .55s}
+@keyframes xoPop{0%{transform:scale(0) rotate(-6deg);opacity:0}55%{transform:scale(1.18) rotate(2deg);opacity:1}78%{transform:scale(.92) rotate(-1deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes winPulse{0%,100%{filter:drop-shadow(0 0 10px rgba(255,255,255,.25));transform:scale(1)}50%{filter:drop-shadow(0 0 22px rgba(255,255,255,.55)) drop-shadow(0 0 36px currentColor);transform:scale(1.08)}}
+.cell-win-x{border-color:rgba(125,211,252,.9)!important;box-shadow:0 0 0 1px rgba(56,189,248,.4),0 0 18px rgba(56,189,248,.6),0 0 36px rgba(56,189,248,.45)!important}
+.cell-win-o{border-color:rgba(251,113,133,.9)!important;box-shadow:0 0 0 1px rgba(251,113,133,.4),0 0 18px rgba(244,63,94,.6),0 0 36px rgba(244,63,94,.45)!important}
+#loading-screen{position:fixed;inset:0;background:#020617;z-index:1000;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .6s}#loading-screen.hide{opacity:0;pointer-events:none}
+.app-icon{width:96px;height:96px;border-radius:22px;background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 30px rgba(56,189,248,.2);padding:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;animation:iconEntrance .8s cubic-bezier(.34,1.56,.64,1) both,iconFloat 3s ease-in-out infinite .8s}
+@keyframes iconEntrance{0%{transform:scale(0) rotate(-12deg);opacity:0}60%{transform:scale(1.12) rotate(4deg);opacity:1}80%{transform:scale(.94) rotate(-2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px) scale(1.03)}}
+.mini-cell{background:rgba(255,255,255,.05);border-radius:4px;display:flex;justify-content:center;align-items:center;font-size:10px;font-weight:900}.mini-cell.x{color:#38bdf8}.mini-cell.o{color:#f43f5e}
+.loader-bar{width:180px;height:4px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:24px;overflow:hidden}.loader-fill{height:100%;width:0%;background:linear-gradient(90deg,#38bdf8,#818cf8,#f43f5e);border-radius:99px;animation:fill 1.8s ease-in-out forwards}@keyframes fill{to{width:100%}}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.85);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:100;padding:20px}.modal.active{display:flex}.modal-content{background:#1e293b;border:1px solid var(--border);padding:30px;border-radius:24px;width:100%;max-width:400px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,.5)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(16,185,129,.15);border:1px solid #10b981;color:#6ee7b7;padding:10px 18px;border-radius:99px;font-size:.9rem;z-index:200;display:none}.toast.show{display:block}
+.ad-badge{font-size:.7rem;color:#10b981;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);padding:4px 10px;border-radius:99px;margin-top:12px;display:inline-flex;gap:6px}
+</style>
 </head>
 <body>
-    <h1>Tic Tac Pro</h1>
-    <div class="board" id="board">
-        <div class="cell" onclick="makeMove(0)"></div>
-        <div class="cell" onclick="makeMove(1)"></div>
-        <div class="cell" onclick="makeMove(2)"></div>
-        <div class="cell" onclick="makeMove(3)"></div>
-        <div class="cell" onclick="makeMove(4)"></div>
-        <div class="cell" onclick="makeMove(5)"></div>
-        <div class="cell" onclick="makeMove(6)"></div>
-        <div class="cell" onclick="makeMove(7)"></div>
-        <div class="cell" onclick="makeMove(8)"></div>
+<div class="aurora blob-1"></div><div class="aurora blob-2"></div><div class="aurora blob-3"></div>
+<div id="loading-screen">
+  <div class="app-icon">
+    <div class="mini-cell x">X</div><div class="mini-cell o">O</div><div class="mini-cell x">X</div>
+    <div class="mini-cell o">O</div><div class="mini-cell x">X</div><div class="mini-cell"></div>
+    <div class="mini-cell x">X</div><div class="mini-cell"></div><div class="mini-cell o">O</div>
+  </div>
+  <h1 style="margin-top:18px">Tic Tac Pro</h1>
+  <div class="subtitle" style="margin:6px 0 0 0">Hyper Realistic Edition</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+<div class="container">
+  <div id="start-screen" class="screen active">
+    <h1>Tic Tac Pro</h1><div class="subtitle">Hyper Realistic Edition</div>
+    <div class="card">
+      <span class="label">Select Grid Size</span>
+      <div class="btn-group"><button class="option-btn selected" onclick="setGridSize(3)">3 x 3 Classic</button><button class="option-btn" onclick="setGridSize(4)">4 x 4 Pro</button></div>
+      <span class="label">Game Mode</span>
+      <div class="btn-group"><button class="option-btn selected" onclick="setGameMode('pvp')">2 Players</button><button class="option-btn" onclick="setGameMode('bot')">Vs Bot</button></div>
+      <div id="bot-difficulty-container" style="display:none"><span class="label">Bot Difficulty</span><div class="btn-group three"><button class="option-btn selected" onclick="setDifficulty('medium')">Medium</button><button class="option-btn" onclick="setDifficulty('hard')">Hard</button><button class="option-btn" onclick="setDifficulty('insane')">Insane</button></div></div>
     </div>
-    <div id="status">Player X ki turn hai</div>
-    <button onclick="resetGame()">Reset Game</button>
-
-    <script>
-        let board = ['', '', '', '', '', '', '', '', ''];
-        let currentPlayer = 'X';
-        let isGameActive = true;
-
-        function makeMove(index) {
-            if (board[index] === '' && isGameActive) {
-                board[index] = currentPlayer;
-                document.getElementsByClassName('cell')[index].innerText = currentPlayer;
-                
-                let winningConditions = [
-                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                    [0, 4, 8], [2, 4, 6]
-                ];
-
-                let roundWon = false;
-                for (let condition of winningConditions) {
-                    let a = board[condition[0]];
-                    let b = board[condition[1]];
-                    let c = board[condition[2]];
-                    if (a === '' || b === '' || c === '') continue;
-                    if (a === b && b === c) {
-                        roundWon = true;
-                        break;
-                    }
-                }
-
-                if (roundWon) {
-                    document.getElementById('status').innerText = `Player ${currentPlayer} jeet gaya!`;
-                    isGameActive = false;
-                    return;
-                }
-
-                if (!board.includes('')) {
-                    document.getElementById('status').innerText = 'Match Draw ho gaya!';
-                    isGameActive = false;
-                    return;
-                }
-
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                document.getElementById('status').innerText = `Player ${currentPlayer} ki turn hai`;
-            }
-        }
-
-        function resetGame() {
-            board = ['', '', '', '', '', '', '', '', ''];
-            isGameActive = true;
-            currentPlayer = 'X';
-            document.getElementById('status').innerText = 'Player X ki turn hai';
-            let cells = document.getElementsByClassName('cell');
-            for (let cell of cells) {
-                cell.innerText = '';
-            }
-        }
-    </script>
+    <button class="primary-btn" onclick="startGame()">START GAME</button>
+    <button class="secondary-btn" onclick="togglePrivacyModal(true)">Privacy Policy</button>
+    <div class="ad-badge">● AdMob Integrated ✓</div>
+  </div>
+  <div id="game-screen" class="screen">
+    <div class="game-header"><button class="secondary-btn" style="width:auto;padding:8px 15px;margin:0" onclick="returnToMenu()">🏠 Menu</button><div class="score-board"><div class="score-box"><span>X Score</span><b id="score-x">0</b></div><div class="score-box"><span>O Score</span><b id="score-o">0</b></div></div><button class="secondary-btn" style="width:auto;padding:8px 15px;margin:0" onclick="toggleSound()">🔊</button></div>
+    <div class="turn-indicator" id="turn-indicator">Player X's Turn</div>
+    <div id="game-board" class="board grid-3"></div>
+    <button class="secondary-btn" onclick="resetGame()">Reset Board</button>
+  </div>
+</div>
+<div id="result-modal" class="modal"><div class="modal-content"><h2 id="result-title">Player X Wins!</h2><p id="result-desc" style="color:#94a3b8;margin:10px 0 18px 0">Want a second chance?</p><button class="primary-btn" onclick="closeResultModal()">Play Again</button><button class="secondary-btn" id="extra-chance-btn" onclick="watchRewardedAdForExtraChance()" style="background:rgba(16,185,129,.15);border-color:#10b981;color:#34d399;margin-top:10px">🔄 Extra Chance - Watch Ad</button></div></div>
+<div id="ad-modal" class="modal"><div class="modal-content"><h2>📺 Rewarded Ad</h2><p id="ad-countdown">Loading Ad: 9534704032... 3s</p><div class="loader-bar" style="width:100%"><div id="ad-fill" class="loader-fill" style="animation:none;width:0%"></div></div></div></div>
+<div id="privacy-modal" class="modal"><div class="modal-content"><h2>Privacy Policy</h2><p style="font-size:.85rem;color:#94a3b8;line-height:1.6;text-align:left;margin:15px 0">Tic Tac Pro respects your privacy. Uses Google AdMob SDK. Contact: gndeveloperx4@gmail.com</p><button class="primary-btn" onclick="togglePrivacyModal(false)">Close</button></div></div>
+<div id="toast" class="toast"></div>
+<script>
+let gridSize=3,gameMode='pvp',difficulty='medium',board=[],currentPlayer='X',gameActive=true,scores={X:0,O:0},soundEnabled=true,canUseExtraChance=true,lastMovesStack=[];
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+function playSound(t){if(!soundEnabled)return;if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);if(t==='click'){o.frequency.setValueAtTime(400,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(800,audioCtx.currentTime+.08);g.gain.setValueAtTime(.15,audioCtx.currentTime);g.gain.linearRampToValueAtTime(.01,audioCtx.currentTime+.08);o.start();o.stop(audioCtx.currentTime+.08)}else{o.frequency.setValueAtTime(300,audioCtx.currentTime);o.frequency.setValueAtTime(500,audioCtx.currentTime+.1);o.frequency.setValueAtTime(700,audioCtx.currentTime+.2);g.gain.setValueAtTime(.2,audioCtx.currentTime);g.gain.linearRampToValueAtTime(.01,audioCtx.currentTime+.4);o.start();o.stop(audioCtx.currentTime+.4)}}
+function setGridSize(s){gridSize=s;}
+function setGameMode(m){gameMode=m;document.getElementById('bot-difficulty-container').style.display=m==='bot'?'block':'none'}
+function setDifficulty(d){difficulty=d;}
+function startGame(){document.getElementById('start-screen').classList.remove('active');document.getElementById('game-screen').classList.add('active');document.getElementById('game-board').className=`board grid-${gridSize}`;resetGame()}
+function returnToMenu(){document.getElementById('game-screen').classList.remove('active');document.getElementById('start-screen').classList.add('active')}
+function togglePrivacyModal(s){document.getElementById('privacy-modal').classList.toggle('active',s)}
+function toggleSound(){soundEnabled=!soundEnabled;event.target.textContent=soundEnabled?'🔊':'🔇'}
+function resetGame(){board=Array(gridSize*gridSize).fill('');currentPlayer='X';gameActive=true;canUseExtraChance=true;lastMovesStack=[];renderBoard();updateTurnIndicator();document.getElementById('extra-chance-btn').style.display='block'}
+function getXSVG(isWin){
+  return `<svg class="xo-svg ${isWin?'is-win':''}" viewBox="0 0 100 100" style="color:#38bdf8"><defs><filter id="f1"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#38bdf8" flood-opacity="0.8"/><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.4"/></filter></defs><path d="M 22 22 L 78 78 M 78 22 L 22 78" fill="none" stroke="#38bdf8" stroke-width="18" stroke-linecap="round" filter="url(#f1)"/></svg>`;
+}
+function getOSVG(isWin){
+  return `<svg class="xo-svg ${isWin?'is-win':''}" viewBox="0 0 100 100" style="color:#f43f5e"><defs><filter id="f2"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#f43f5e" flood-opacity="0.8"/><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.4"/></filter></defs><circle cx="50" cy="50" r="32" fill="none" stroke="#fb7185" stroke-width="18" filter="url(#f2)"/><ellipse cx="36" cy="32" rx="9" ry="6" fill="white" opacity="0.9"/></svg>`;
+}
+function renderBoard(){const el=document.getElementById('game-board');el.innerHTML='';board.forEach((val,idx)=>{const c=document.createElement('div');c.className=`cell ${val?'has-'+val.toLowerCase():''}`;if(val){const isWin=window._winCells&&window._winCells.includes(idx);c.innerHTML=val==='X'?getXSVG(isWin):getOSVG(isWin);if(isWin)c.classList.add(val==='X'?'cell-win-x':'cell-win-o')}c.addEventListener('click',()=>handleCellClick(idx));el.appendChild(c)})}
+function handleCellClick(idx){if(!gameActive||board[idx]!=='')return;if(gameMode==='bot'&&currentPlayer==='O')return;makeMove(idx,currentPlayer);if(checkWin(currentPlayer)){endGame(currentPlayer)}else if(board.every(c=>c!=='')){endGame('draw')}else{currentPlayer=currentPlayer==='X'?'O':'X';updateTurnIndicator();if(gameMode==='bot'&&currentPlayer==='O'&&gameActive)setTimeout(makeBotMove,400)}}
+function makeMove(idx,player){board[idx]=player;lastMovesStack.push({idx,player});renderBoard()}
+function updateTurnIndicator(){document.getElementById('turn-indicator').textContent=gameMode==='bot'&&currentPlayer==='O'?"🤖 Bot is thinking...":`Player ${currentPlayer}'s Turn`}
+function checkWin(player){const s=gridSize;for(let r=0;r<s;r++){let win=true;let cells=[];for(let c=0;c<s;c++){if(board[r*s+c]!==player)win=false;cells.push(r*s+c)}if(win){window._winCells=cells;return true}}for(let c=0;c<s;c++){let win=true;let cells=[];for(let r=0;r<s;r++){if(board[r*s+c]!==player)win=false;cells.push(r*s+c)}if(win){window._winCells=cells;return true}}let d1=true,c1=[];for(let i=0;i<s;i++){if(board[i*s+i]!==player)d1=false;c1.push(i*s+i)}if(d1){window._winCells=c1;return true}let d2=true,c2=[];for(let i=0;i<s;i++){if(board[i*s+(s-1-i)]!==player)d2=false;c2.push(i*s+(s-1-i))}if(d2){window._winCells=c2;return true}window._winCells=null;return false}
+function makeBotMove(){if(!gameActive)return;const empties=board.map((v,i)=>v===''? i : null).filter(v=>v!==null);let move=empties[Math.floor(Math.random()*empties.length)];if(difficulty!=='medium'){move=findBestMove('O')||move}makeMove(move,'O');if(checkWin('O'))endGame('O');else if(board.every(c=>c!==''))endGame('draw');else{currentPlayer='X';updateTurnIndicator()}}
+function findBestMove(player){const opp=player==='O'?'X':'O';for(let i=0;i<board.length;i++){if(board[i]===''){board[i]=player;if(checkWin(player)){board[i]='';window._winCells=null;return i}board[i]='' }}for(let i=0;i<board.length;i++){if(board[i]===''){board[i]=opp;if(checkWin(opp)){board[i]='';window._winCells=null;return i}board[i]='' }}const center=Math.floor((gridSize*gridSize)/2);if(gridSize===3&&board[center]==='')return center;const empties=board.map((v,i)=>v===''? i : null).filter(v=>v!==null);return empties[Math.floor(Math.random()*empties.length)]}
+function endGame(winner){gameActive=false;const modal=document.getElementById('result-modal');document.getElementById('result-title').textContent=winner==='draw'?"It's a Draw!":`Player ${winner} Wins!`;if(winner!=='draw'){scores[winner]++;document.getElementById(`score-${winner.toLowerCase()}`).textContent=scores[winner]}setTimeout(()=>modal.classList.add('active'),300);document.getElementById('extra-chance-btn').style.display=canUseExtraChance?'block':'none'}
+function closeResultModal(){document.getElementById('result-modal').classList.remove('active');window._winCells=null;resetGame()}
+function watchRewardedAdForExtraChance(){if(!canUseExtraChance)return;document.getElementById('result-modal').classList.remove('active');const adModal=document.getElementById('ad-modal');adModal.classList.add('active');let count=3;const fill=document.getElementById('ad-fill');const cd=document.getElementById('ad-countdown');const iv=setInterval(()=>{count--;cd.textContent=`Rewarded Ad: ${ADMOB_CONFIG.rewarded}... ${count}s`;fill.style.width=((3-count)/3*100)+'%';if(count<=0){clearInterval(iv);adModal.classList.remove('active');grantExtraChance()}},800)}
+function grantExtraChance(){for(let k=0;k<2;k++){if(lastMovesStack.length>0){const last=lastMovesStack.pop();board[last.idx]=''}}if(lastMovesStack.length>0)currentPlayer=lastMovesStack[lastMovesStack.length-1].player==='X'?'O':'X';else currentPlayer='X';gameActive=true;canUseExtraChance=false;window._winCells=null;renderBoard();updateTurnIndicator();document.getElementById('toast').textContent='✨ Extra Chance Granted!';document.getElementById('toast').classList.add('show');setTimeout(()=>document.getElementById('toast').classList.remove('show'),2500)}
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loading-screen').classList.add('hide')},1800)})
+</script>
 </body>
 </html>
