@@ -1,0 +1,15 @@
+{
+  "name": "Tic Tac Pro",
+  "short_name": "Tic Tac Pro",
+  "start_url": "/Tictac-pro/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
